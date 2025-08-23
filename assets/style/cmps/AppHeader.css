@@ -19,6 +19,36 @@
     gap: 15px;
 }
 
+/* Todos Progress Bar Styles */
+.todos-progress {
+    margin: 0 20px;
+}
+
+.progress-info {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.progress-bar {
+    background-color: #ecf0f1;
+    border-radius: 4px;
+    height: 8px;
+    width: 200px;
+    margin: 5px 0;
+    overflow: hidden;
+}
+
+.progress-fill {
+    background-color: #3498db;
+    height: 8px;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.progress-fill.completed {
+    background-color: #2ecc71;
+}
+
 
 a.active {
     color: rgb(241, 212, 241);

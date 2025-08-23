@@ -37,8 +37,8 @@ export function TodoDetails() {
             <h1 className={(todo.isDone)? 'done' : ''}>{todo.txt}</h1>
             <h2>{(todo.isDone)? 'Done!' : 'In your list'}</h2>
 
-            <h1>Todo importance: {todo.importance}</h1>
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim rem accusantium, itaque ut voluptates quo? Vitae animi maiores nisi, assumenda molestias odit provident quaerat accusamus, reprehenderit impedit, possimus est ad?</p>
+            <h1 style={{ color: todo.color }}>Todo importance: {todo.importance}</h1>
+            <p style={{ color: todo.color }}>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim rem accusantium, itaque ut voluptates quo? Vitae animi maiores nisi, assumenda molestias odit provident quaerat accusamus, reprehenderit impedit, possimus est ad?</p>
             <button onClick={onBack}>Back to list</button>
             <div>
                 <Link to={`/todo/${todo.nextTodoId}`}>Next Todo</Link> |
