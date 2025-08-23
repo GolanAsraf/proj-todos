@@ -1,5 +1,5 @@
 import { todoService } from "../../services/todo.service.js"
-import { store, SET_TODOS, SET_LOADING, REMOVE_TODO, UPDATE_TODO, ADD_TODO } from "../store.js"
+import { store, SET_TODOS, SET_LOADING, REMOVE_TODO, UPDATE_TODO, ADD_TODO, SET_FILTER_BY } from "../store.js"
 
 export function loadTodos(filterBy) {
     store.dispatch({ type: SET_LOADING, isLoading: true })
@@ -12,6 +12,10 @@ export function loadTodos(filterBy) {
         .finally(() => {
             store.dispatch({ type: SET_LOADING, isLoading: false })
         })
+}
+
+export function setFilterBy(filterBy) {
+    store.dispatch({ type: SET_FILTER_BY, filterBy })
 }
 
 export function removeTodo(todoId) {

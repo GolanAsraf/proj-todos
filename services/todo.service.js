@@ -29,6 +29,14 @@ function query(filterBy = {}) {
                 todos = todos.filter(todo => todo.importance >= filterBy.importance)
             }
 
+            if (filterBy.status && filterBy.status !== 'all') {
+                if (filterBy.status === 'active') {
+                    todos = todos.filter(todo => !todo.isDone)
+                } else if (filterBy.status === 'completed') {
+                    todos = todos.filter(todo => todo.isDone)
+                }
+            }
+
             return todos
         })
 }
@@ -58,19 +66,19 @@ function save(todo) {
     }
 }
 
-function getEmptyTodo(txt = '', importance = 5) {
-    return { txt, importance, isDone: false }
+function getEmptyTodo(txt = '', importance = 5, color = '#3498db') {
+    return { txt, importance, isDone: false, color }
 }
 
 function getDefaultFilter() {
-    return { txt: '', importance: 0 }
+    return { txt: '', importance: 0, status: 'all' }
 }
 
 function getFilterFromSearchParams(searchParams) {
     const defaultFilter = getDefaultFilter()
     const filterBy = {}
     for (const field in defaultFilter) {
-        filterBy[field] = searchParams.get(field) || ''
+        filterBy[field] = searchParams.get(field) || defaultFilter[field]
     }
     return filterBy
 }
@@ -100,7 +108,9 @@ function _createTodos() {
 }
 
 function _createTodo(txt, importance) {
-    const todo = getEmptyTodo(txt, importance)
+    const colors = ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#34495e', '#e67e22']
+    const randomColor = colors[utilService.getRandomIntInclusive(0, colors.length - 1)]
+    const todo = getEmptyTodo(txt, importance, randomColor)
     todo._id = utilService.makeId()
     todo.createdAt = todo.updatedAt = Date.now() - utilService.getRandomIntInclusive(0, 1000 * 60 * 60 * 24)
     return todo
@@ -134,6 +144,7 @@ function _getTodoCountByImportanceMap(todos) {
 //     txt: "Master Redux",
 //     importance: 9,
 //     isDone: false,
+//     color: "#3498db",
 //     createdAt: 1711472269690,
 //     updatedAt: 1711472269690
 // }

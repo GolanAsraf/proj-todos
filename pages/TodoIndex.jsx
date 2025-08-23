@@ -3,7 +3,7 @@ import { TodoList } from "../cmps/TodoList.jsx"
 import { DataTable } from "../cmps/data-table/DataTable.jsx"
 import { todoService } from "../services/todo.service.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
-import { loadTodos, removeTodo, saveTodo } from "../store/actions/todos.actions.js"
+import { loadTodos, removeTodo, saveTodo, setFilterBy } from "../store/actions/todos.actions.js"
 
 const { useState, useEffect } = React
 const { Link, useSearchParams } = ReactRouterDOM
@@ -19,14 +19,23 @@ export function TodoIndex() {
 
     const defaultFilter = todoService.getFilterFromSearchParams(searchParams)
 
-    const [filterBy, setFilterBy] = useState(defaultFilter)
+    // const [filterBy, setFilterBy] = useState(defaultFilter)
+    const filterBy = useSelector(state => state.filterBy)
+
+    // Initialize filterBy from URL params on component mount
+    useEffect(() => {
+        setFilterBy(defaultFilter)
+        console.log('filterBy:', filterBy);
+    }, [])
 
     useEffect(() => {
         setSearchParams(filterBy)
-        loadTodos()
+        loadTodos(filterBy)
     }, [filterBy])
 
     function onRemoveTodo(todoId) {
+        if(!confirm('Are you sure?')) return
+
         removeTodo(todoId)
             .then(() => {
                 loadTodos()
