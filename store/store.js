@@ -33,13 +33,13 @@ export function appReducer(state = initialState, cmd = {}) {
             return {
                 ...state,
                 todos: state.todos.map(todo =>
-                    todo.id === cmd.todo.id ? cmd.todo : todo
+                    todo._id === cmd.todo._id ? cmd.todo : todo
                 )
             }
         case REMOVE_TODO:
             return {
                 ...state,
-                todos: state.todos.filter(todo => todo.id !== cmd.todoId)
+                todos: state.todos.filter(todo => todo._id !== cmd.todoId)
             }
         case SET_LOADING:
             return { ...state, isLoading: cmd.isLoading }

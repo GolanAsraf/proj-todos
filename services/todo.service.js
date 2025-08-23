@@ -42,6 +42,7 @@ function get(todoId) {
 }
 
 function remove(todoId) {
+    console.log('Removing todo:', todoId);
     return storageService.remove(TODO_KEY, todoId)
 }
 
