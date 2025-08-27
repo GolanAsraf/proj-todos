@@ -10,7 +10,6 @@ export const SET_LOADING = 'SET_LOADING'
 export const SET_FILTER_BY = 'SET_FILTER_BY'
 
 export const SET_USER = 'SET_USER'
-export const SET_USER_BALANCE = 'SET_USER_BALANCE'
 
 const initialState = {
     todos: [],
@@ -47,8 +46,6 @@ export function appReducer(state = initialState, cmd = {}) {
             return { ...state, filterBy: { ...state.filterBy, ...cmd.filterBy } }
         case SET_USER:
             return { ...state, user: cmd.user }
-        case SET_USER_BALANCE:
-            return { ...state, user: { ...state.user, balance: cmd.balance } }
 
         default:
             return state

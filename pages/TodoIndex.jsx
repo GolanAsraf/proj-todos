@@ -13,6 +13,7 @@ export function TodoIndex() {
 
     // const [todos, setTodos] = useState(null)
     const todos = useSelector(state => state.todos)
+    const filterBy = useSelector(state => state.filterBy)
 
     // Special hook for accessing search-params:
     const [searchParams, setSearchParams] = useSearchParams()
@@ -20,7 +21,6 @@ export function TodoIndex() {
     const defaultFilter = todoService.getFilterFromSearchParams(searchParams)
 
     // const [filterBy, setFilterBy] = useState(defaultFilter)
-    const filterBy = useSelector(state => state.filterBy)
 
     // Initialize filterBy from URL params on component mount
     useEffect(() => {
@@ -38,7 +38,7 @@ export function TodoIndex() {
 
         removeTodo(todoId)
             .then(() => {
-                loadTodos()
+                // loadTodos()
                 showSuccessMsg(`Todo removed`)
             })
             .catch(err => {

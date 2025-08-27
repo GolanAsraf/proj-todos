@@ -1,13 +1,17 @@
+const { useState } = React
+const { useNavigate } = ReactRouter
+
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { userService } from '../services/user.service.js'
-import { login, signup } from '../store/actions/user.actions.js'    
+import { authService } from '../services/auth.service.js'
 
-const { useState } = React
 
-export function LoginSignup({  }) {
+export function LoginSignup({ setLoggedinUser }) {
 
     const [isSignup, setIsSignUp] = useState(false)
     const [credentials, setCredentials] = useState(userService.getEmptyCredentials())
+    
+    const navigate = useNavigate()
 
     function handleChange({ target }) {
         const { name: field, value } = target
@@ -16,25 +20,33 @@ export function LoginSignup({  }) {
 
     function handleSubmit(ev) {
         ev.preventDefault()
-        console.log('Submitting:', credentials);
-
-        isSignup ? onSignup(credentials) : onLogin(credentials)
+        isSignup ? signup(credentials) : login(credentials)
     }
 
-    function onLogin(credentials) {
-        login(credentials)
-            .then()
-            .then(() => { showSuccessMsg('Logged in successfully') })
-            .catch((err) => { showErrorMsg('Oops try again') })
+    function login(credentials) {
+        authService.login(credentials)
+            .then(user => {
+                setLoggedinUser(user)
+                showSuccessMsg('Logged in successfully')
+                navigate('/bug')
+            })
+            .catch(err => { 
+                console.log(err)
+                showErrorMsg(`Couldn't login...`) 
+            })
     }
 
-    function onSignup(credentials) {
-        console.log('Signing up:', credentials);
-
-        signup(credentials)
-            .then()
-            .then(() => { showSuccessMsg('Signed in successfully') })
-            .catch((err) => { showErrorMsg('Oops try again') })
+    function signup(credentials) {
+        authService.signup(credentials)
+            .then(user => {
+                setLoggedinUser(user)
+                showSuccessMsg('Signed in successfully')
+                navigate('/bug')
+            })
+            .catch(err => { 
+                console.log(err)
+                showErrorMsg(`Couldn't signup...`) 
+            })
     }
 
     return (
@@ -70,7 +82,10 @@ export function LoginSignup({  }) {
             </form>
 
             <div className="btns">
-                <a href="#" onClick={() => setIsSignUp(!isSignup)}>
+                <a href="#" onClick={(ev) => {
+                    ev.preventDefault()
+                    setIsSignUp(!isSignup)
+                }}>
                     {isSignup ?
                         'Already a member? Login' :
                         'New user? Signup here'

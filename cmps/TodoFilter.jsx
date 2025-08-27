@@ -19,10 +19,6 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
                 value = +value || ''
                 break
 
-            case 'checkbox':
-                value = target.checked
-                break
-
             default: break
         }
 

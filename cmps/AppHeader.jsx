@@ -7,20 +7,21 @@ import { userService } from '../services/user.service.js'
 import { UserMsg } from "./UserMsg.jsx"
 import { LoginSignup } from './LoginSignup.jsx'
 import { showErrorMsg } from '../services/event-bus.service.js'
+import { logout } from '../store/actions/user.actions.js'
 
 
 export function AppHeader() {
     const navigate = useNavigate()
     const [user, setUser] = useState(userService.getLoggedinUser())
     const todos = useSelector(state => state.todos)
-    
+
     // Calculate progress percentage
     const completedTodos = todos.filter(todo => todo.isDone).length
     const totalTodos = todos.length
     const progressPercentage = totalTodos > 0 ? Math.round((completedTodos / totalTodos) * 100) : 0
-    
+
     function onLogout() {
-        userService.logout()
+        logout()
             .then(() => {
                 onSetUser(null)
             })
@@ -37,7 +38,7 @@ export function AppHeader() {
         <header className="app-header full main-layout">
             <section className="header-container">
                 <h1>React Todo App</h1>
-                
+
                 {/* Todos Progress Bar */}
                 {totalTodos > 0 && (
                     <section className="todos-progress">
@@ -45,14 +46,14 @@ export function AppHeader() {
                             <span>Progress: {completedTodos}/{totalTodos} ({progressPercentage}%)</span>
                         </article>
                         <article className="progress-bar">
-                            <article 
+                            <article
                                 className={`progress-fill ${progressPercentage === 100 ? 'completed' : ''}`}
                                 style={{ width: `${progressPercentage}%` }}
                             ></article>
                         </article>
                     </section>
                 )}
-                
+
                 {user ? (
                     < section >
                         <Link to={`/user/${user._id}`}>Hello {user.fullname}</Link>
