@@ -8,6 +8,7 @@ export const userService = {
     signup,
     getById,
     query,
+    update,
     getEmptyCredentials
 }
 const STORAGE_KEY_LOGGEDIN = 'user'
@@ -19,6 +20,19 @@ function query() {
 
 function getById(userId) {
     return storageService.get(STORAGE_KEY, userId)
+}
+
+function update(user) {
+    user.updatedAt = Date.now()
+    return storageService.put(STORAGE_KEY, user)
+        .then(updatedUser => {
+            // If this is the logged-in user, update session storage too
+            const loggedInUser = getLoggedinUser()
+            if (loggedInUser && loggedInUser._id === updatedUser._id) {
+                _setLoggedinUser(updatedUser)
+            }
+            return updatedUser
+        })
 }
 
 function login({ username, password }) {

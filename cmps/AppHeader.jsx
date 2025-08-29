@@ -12,7 +12,7 @@ import { logout } from '../store/actions/user.actions.js'
 
 export function AppHeader() {
     const navigate = useNavigate()
-    const [user, setUser] = useState(userService.getLoggedinUser())
+    const user = useSelector(state => state.user)
     const todos = useSelector(state => state.todos)
 
     // Calculate progress percentage
@@ -23,7 +23,7 @@ export function AppHeader() {
     function onLogout() {
         logout()
             .then(() => {
-                onSetUser(null)
+                navigate('/')
             })
             .catch((err) => {
                 showErrorMsg('OOPs try again')
@@ -31,7 +31,6 @@ export function AppHeader() {
     }
 
     function onSetUser(user) {
-        setUser(user)
         navigate('/')
     }
     return (
