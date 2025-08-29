@@ -3,6 +3,7 @@ import { storageService } from "./async-storage.service.js"
 
 export const userService = {
     getLoggedinUser,
+    setLoggedinUser,
     login,
     logout,
     signup,
@@ -39,11 +40,11 @@ function login({ username, password }) {
     return storageService.query(STORAGE_KEY)
         .then(users => {
             const user = users.find(user => user.username === username)
-            if (user) return _setLoggedinUser(user)
+            if (user && user.password === password) return _setLoggedinUser(user)
             else return Promise.reject('Invalid login')
         })
 }
-
+   
 function signup({ username, password, fullname }) {
     
     const user = getEmptyCredentials(fullname, username, password)
@@ -61,18 +62,31 @@ function logout() {
 }
 
 function getLoggedinUser() {
-    return JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN))
+    const userStr = sessionStorage.getItem(STORAGE_KEY_LOGGEDIN)
+    return userStr ? JSON.parse(userStr) : null
+}
+
+function setLoggedinUser() {
+    const userStr = sessionStorage.getItem(STORAGE_KEY_LOGGEDIN)
+    if (!userStr) return null
+    
+    const user = JSON.parse(userStr)
+    console.log('setLoggedinUser', user)
+    if (user) {
+        _setLoggedinUser(user)
+    }
+    return user
 }
 
 function _setLoggedinUser(user) {
+    if (!user) return null
+    
     const userToSave = { _id: user._id, fullname: user.fullname, username: user.username, balance: user.balance, activities: user.activities }
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
     return userToSave
 }
 
 function getEmptyCredentials(fullname = '', username = '', password = '') {
-    console.log('getEmptyCredentials', fullname, username, password);
-    
     return {
         fullname,
         username,

@@ -15,7 +15,6 @@ import { store } from "./store/store.js"
 import { UserDetails } from "./pages/UserDetails.jsx"
 
 export function RootCmp() {
-
     return (
         <Provider store={store}>
             <Router>

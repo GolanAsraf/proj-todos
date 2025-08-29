@@ -10,6 +10,8 @@ export const authService = {
 const STORAGE_KEY_LOGGEDIN_USER = 'loggedInUser'
 
 function login({ username, password }) {
+    console.log(username, password);
+    
     return userService.getByUsername(username)
         .then(user => {
             if (user && user.password === password) return _setLoggedinUser(user)

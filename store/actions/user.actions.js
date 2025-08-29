@@ -22,6 +22,13 @@ export function logout() {
         })
 }
 
+export function initializeUser() {
+    const user = userService.getLoggedinUser()
+    if (user) {
+        store.dispatch({ type: SET_USER, user })
+    }
+}
+
 export function setUserBalance(balance) {
     const user = userService.getLoggedinUser()
     if (user) {

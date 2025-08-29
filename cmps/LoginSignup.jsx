@@ -16,12 +16,12 @@ export function LoginSignup({  }) {
 
     function handleSubmit(ev) {
         ev.preventDefault()
-        console.log('Submitting:', credentials);
 
         isSignup ? onSignup(credentials) : onLogin(credentials)
     }
 
     function onLogin(credentials) {
+        
         login(credentials)
             .then()
             .then(() => { showSuccessMsg('Logged in successfully') })

@@ -1,14 +1,12 @@
-const { useState } = React
 const { Link, NavLink } = ReactRouterDOM
 const { useNavigate } = ReactRouter
 const { useSelector } = ReactRedux
+const { useEffect } = React
 
-import { userService } from '../services/user.service.js'
 import { UserMsg } from "./UserMsg.jsx"
 import { LoginSignup } from './LoginSignup.jsx'
 import { showErrorMsg } from '../services/event-bus.service.js'
-import { logout } from '../store/actions/user.actions.js'
-
+import { logout, initializeUser } from '../store/actions/user.actions.js'
 
 export function AppHeader() {
     const navigate = useNavigate()
@@ -20,6 +18,10 @@ export function AppHeader() {
     const totalTodos = todos.length
     const progressPercentage = totalTodos > 0 ? Math.round((completedTodos / totalTodos) * 100) : 0
 
+    useEffect(() => {
+        initializeUser()
+    }, []);
+
     function onLogout() {
         logout()
             .then(() => {
@@ -30,7 +32,7 @@ export function AppHeader() {
             })
     }
 
-    function onSetUser(user) {
+    function onSetUser() {
         navigate('/')
     }
     return (
